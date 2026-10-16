@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 联系人行的背景：浅灰圆角，和白色卡片分层，方便老人分辨「这一块是一组」。 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#FFF0F0F0" />
+    <corners android:radius="16dp" />
+</shape>

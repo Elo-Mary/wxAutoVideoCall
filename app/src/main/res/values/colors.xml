@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主色取微信绿与暖色之间的一个高对比度色，老人看得清。 -->
+    <color name="brand">#FF1AAD19</color>
+    <color name="brand_dark">#FF12811A</color>
+    <color name="accent_video">#FF1AAD19</color>
+    <color name="accent_voice">#FF3A7AFE</color>
+    <color name="text_primary">#FF1A1A1A</color>
+    <color name="text_secondary">#FF666666</color>
+    <color name="surface">#FFFFFFFF</color>
+    <color name="background">#FFF5F5F5</color>
+</resources>

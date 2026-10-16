@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 老人看的界面：只保留「给谁打」「打什么」两件事，其余全部收进设置页。 -->
+<resources>
+    <string name="app_name">一键通话</string>
+
+    <!-- 无障碍服务在系统设置里的名称与说明。这是使用者唯一需要在系统里认出的名字。 -->
+    <string name="accessibility_service_label">一键通话（自动拨打微信视频）</string>
+    <string name="accessibility_service_summary">自动操作微信，拨出视频通话</string>
+    <string name="accessibility_service_description">开启后，本应用才能替你点击微信里的按钮、拨出视频通话。\n\n本服务只读取微信的界面内容用于点击，不会上传任何信息。</string>
+
+    <!-- 主页 -->
+    <string name="action_call_video">视频通话</string>
+    <string name="action_call_voice">语音通话</string>
+    <string name="action_cancel">取消</string>
+    <string name="hint_choose_contact">选择要打给谁</string>
+    <string name="msg_wechat_not_installed">没有找到微信，请先安装微信</string>
+    <string name="msg_accessibility_off">还没开启无障碍，点这里去开启</string>
+    <string name="msg_tap_to_settings">点这里进入设置</string>
+    <string name="msg_contact_removed">这个联系人已经删掉了，请重新在应用里设置</string>
+    <string name="hint_create_shortcuts">建议到设置里给每个家人创建桌面快捷方式，奶奶点谁的图标就打给谁</string>
+
+    <!-- 桌面快捷方式 -->
+    <string name="label_create_shortcut">放到桌面</string>
+    <string name="label_shortcut_pinned">已在桌面</string>
+    <string name="msg_shortcut_requested">请在系统弹框里点「添加」</string>
+    <string name="msg_shortcut_unsupported">这台手机不支持自动创建桌面快捷方式，请手动把应用图标拖到桌面</string>
+
+    <!-- 设置页 -->
+    <string name="title_settings">设置</string>
+    <string name="title_permission_guide">运行环境检查</string>
+    <string name="label_contacts">常用联系人</string>
+    <string name="label_add_contact">添加联系人</string>
+    <string name="label_contact_name">微信里的名字</string>
+    <string name="label_default_contact">默认（应用图标里排第一个）</string>
+    <string name="label_debug_log">记录调试日志</string>
+    <string name="label_view_log">查看日志</string>
+    <string name="label_run_check">运行环境自检</string>
+    <string name="label_save">保存</string>
+    <string name="label_delete">删除</string>
+    <string name="msg_need_one_contact">请至少添加一个联系人</string>
+    <string name="msg_saved">已保存</string>
+
+    <!-- 权限引导 -->
+    <string name="guide_accessibility_title">第 1 步：开启无障碍服务</string>
+    <string name="guide_accessibility_desc">没有这一步，应用无法替你点击微信里的按钮。</string>
+    <string name="guide_battery_title">第 2 步：允许后台运行</string>
+    <string name="guide_battery_desc">部分手机（OPPO/vivo/一加/realme）会限制后台，需要手动放行，否则点图标后可能没反应。</string>
+    <string name="guide_action_open">去开启</string>
+    <string name="guide_action_done">已完成</string>
+    <string name="guide_status_ok">已开启</string>
+    <string name="guide_status_missing">未开启</string>
+</resources>

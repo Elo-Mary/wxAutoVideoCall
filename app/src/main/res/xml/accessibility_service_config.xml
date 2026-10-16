@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  无障碍服务声明。
+
+  关键取舍：
+  * canRetrieveWindowContent 必须为 true，否则拿不到微信的节点树。
+  * packageNames 只限制微信，减少无谓的事件回调，也降低耗电与隐私面。
+  * flagFlagDefault 而不是 flagRequestFilterKeyEvents：本服务只点击不读键盘，
+    不申请 key event 过滤可以减少系统安全提示。
+  * notificationTimeout 取 100ms：微信页面切换较快，太大会漏事件。
+  * canPerformGestures 为 true：微信部分控件在节点树里拿不到可点击节点，
+    需要退化为坐标手势点击（dispatchGesture）。
+-->
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityEventTypes="typeWindowStateChanged|typeWindowContentChanged|typeViewClicked|typeViewFocused|typeWindowsChanged"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:accessibilityFlags="flagDefault|flagRetrieveInteractiveWindows|flagIncludeNotImportantViews"
+    android:canPerformGestures="true"
+    android:canRetrieveWindowContent="true"
+    android:description="@string/accessibility_service_description"
+    android:notificationTimeout="100"
+    android:packageNames="com.tencent.mm"
+    android:settingsActivity="com.elomary.wxautovideocall.ui.SettingsActivity"
+    android:summary="@string/accessibility_service_summary" />
