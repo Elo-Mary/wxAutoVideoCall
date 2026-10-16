@@ -89,6 +89,15 @@ sdk.dir=E\:\\Android\\Sdk
 adb install -r app\build\outputs\apk\debug\app-debug.apk
 ```
 
+如果要做真机调试，用仓库里的脚本更省事 —— 它会编译、覆盖安装，
+然后只抓本应用相关的日志（需要手机已开 USB 调试并授权）：
+
+```powershell
+.\debug-install.ps1
+```
+
+调试包带 `.debug` 后缀，不会覆盖正式包，所以正式版可以一直留在手机上。
+
 ---
 
 ## 出问题了怎么排查
@@ -126,19 +135,66 @@ adb install -r app\build\outputs\apk\debug\app-debug.apk
 应用**不联网上传任何数据**。日志只存在手机本地，靠手动复制发出来。
 无障碍服务只读取微信的界面内容用于点击，不做其他用途。
 
-## 不打算做的事
+## 开发约定
 
-- 需要 root 的方案。
-- 常驻悬浮球（作者明确不要，怕误触）。
-- 申请「使用情况访问」这类需要额外引导的重权限。
+改代码前请先看下面这几条。它们都是**架构上的硬约束**，不是风格偏好。
+
+### 微信控件定位必须集中管理
+
+微信的 `resource-id` 是混淆过的，不同版本还不一样。因此本项目采取
+**多套候选 + 文案兜底**的定位策略，并且把所有「怎么找到这个按钮」的知识
+集中在这两个文件里：
+
+- [`WeChatSelectors.java`](app/src/main/java/com/elomary/wxautovideocall/automation/WeChatSelectors.java)
+  —— 控件文案与 resource-id 的候选值
+- [`WeChatFinders.java`](app/src/main/java/com/elomary/wxautovideocall/automation/WeChatFinders.java)
+  —— 多候选依次降级的查找逻辑
+
+**不要把控件文案或 resource-id 写进流程代码。** 适配新版本微信时只应改动
+`WeChatSelectors`。另外，`WeChatSelectors` 里标有 `TODO(真机)` 的 id 均未经
+真机验证，在拿到真机证据之前不要把它们当成确定值，也不要删掉文案兜底路径。
+
+### 拨号流程不能阻塞主线程
+
+无障碍服务的回调跑在主线程，任何 `sleep` 或阻塞等待都会直接导致 ANR，
+而且阻塞期间微信的节点树根本不会更新，等待是无效的。
+
+所以流程是**「声明达成条件 + 事件驱动重试 + 每步超时」的状态机**
+（见 [`CallFlowController`](app/src/main/java/com/elomary/wxautovideocall/automation/CallFlowController.java)）：
+每一步声明自己的目标，控制器反复检查条件是否达成，没达成就在该步的预算内重试动作，
+达成后才进入下一步。新增步骤请沿用这个模型，不要引入轮询式的 sleep。
+
+### 失败必须可解释
+
+出问题的现场在老人的手机上，开发者往往拿不到那台设备。任何失败路径都要往
+[`DebugLog`](app/src/main/java/com/elomary/wxautovideocall/data/DebugLog.java)
+里写清**卡在哪一步**以及**当时的界面长什么样**。这是排障的唯一依据。
+
+### 提交前必须能编译
+
+无障碍相关的代码很容易在编译期出错（猜错 API 级别、误用隐藏 API 等）。
+改完请至少跑一次：
+
+```powershell
+.\gradlew.bat assembleDebug
+```
+
+一个已经踩过的坑：**不要用 `android.util.Log.format()`**，它是隐藏 API，
+编译期会报「找不到符号」。改用 `String.format(Locale.US, ...)`。
+
+### 刻意不做的事
+
+以下几条是明确的设计边界，不是「暂时没做」，请不要顺手加上：
+
+- **需要 root 的方案。** 目标设备是老人的手机，不会 root。
+- **常驻悬浮球。** 怕误触。
+- **申请「使用情况访问」（`PACKAGE_USAGE_STATS`）这类重权限。**
+  判断前台应用用无障碍服务自己的窗口列表就够了，不必为此让使用者多开一个权限。
+- **在拨号卡片上增加按钮。** 面向老人的界面只放「打给谁」和「视频还是语音」，
+  新功能一律进设置页。
 
 ---
 
 ## 许可
 
 [MIT](LICENSE)
-
-## 开发约定
-
-在本仓库工作的 AI 代理和人类贡献者，**动手改代码前请先读 [`AGENTS.md`](AGENTS.md)**。
-里面写了架构上的硬约束（尤其是「不要在流程代码里散落微信控件文案」那一条）和版本控制约定。

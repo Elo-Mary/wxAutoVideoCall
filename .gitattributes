@@ -1,0 +1,21 @@
+# 默认按文本处理并统一成 LF 入库，避免跨平台协作时换行符来回变动。
+* text=auto eol=lf
+
+# gradlew 是 shell 脚本：一旦被转成 CRLF，Linux/macOS 上执行会报
+# "bad interpreter: /bin/sh^M"。必须锁死 LF。
+gradlew text eol=lf
+
+# Windows 批处理必须是 CRLF。
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# 二进制文件不做换行符转换。
+*.jar binary
+*.apk binary
+*.aab binary
+*.keystore binary
+*.jks binary
+*.p12 binary
+*.png binary
+*.jpg binary
+*.webp binary
